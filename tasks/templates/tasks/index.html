@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Do List</title>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous"> -->
 
     <script src="https://unpkg.com/htmx.org@1.8.4"></script>
 </head>
@@ -42,14 +43,14 @@
         >Ajouter</button>
     </form>
 
-    <div id="tasks">
-        {% include 'tasks/tasks.html' with tasks=tasks %}
+    <div>
+        {% include 'tasks/tasks.html' with tasks=tasks collection=collection %}
     </div>
         
 
     <script>
-        document.body.addEventListener("htmx:responseError", function(event) {
-            alert(event.detail.xhr.responseText);
+        document.body.addEventListener("htmx:responseError", function(evt) {
+            alert(evt.detail.xhr.responseText);
         })
 
         function getCollectionFromUrl() {
