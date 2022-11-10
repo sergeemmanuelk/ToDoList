@@ -1,4 +1,4 @@
-<div id="tasks">
+<div id="tasks" class="d-flex flex-column gap-2 mt-2">
     {% for task in tasks %}
         {% include 'tasks/task.html' with task=task %}
     {% endfor %}

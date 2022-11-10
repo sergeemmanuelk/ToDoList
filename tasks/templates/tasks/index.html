@@ -5,49 +5,73 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Do List</title>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
     <script src="https://unpkg.com/htmx.org@1.8.4"></script>
 </head>
 <body>
-    <h1>To Do List</h1>
+    
+    <header class="py-4">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-10">
+                    <h1 class="text-center">To Do List</h1>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <div id="collections">
-        {% for collection in collections %}
-            {% include 'tasks/collection.html' with collection=collection %}
-        {% endfor %}
+    <div class="py-4">
+        <div class="container mx-auto">
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <nav id="collections" class="list-group" role="tablist">
+                        {% for collection in collections %}
+                            {% include 'tasks/collection.html' with collection=collection %}
+                        {% endfor %}
+                    </nav>
+                    
+                    <form method="POST" class="d-flex gap-2 my-2" >
+                        {% csrf_token %}
+                
+                        <input type="text" name="collection-name" class="form-control" placeholder="Collection">
+                        <button type="submit"
+                            hx-post="{% url 'add-collection' %}"
+                            hx-target="#collections"
+                            hx-swap="beforeend"
+                            class="btn btn-success"
+                        >Ajouter</button>
+                
+                    </form>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12">
+                    <form method="POST" class="d-flex gap-2">
+                        {% csrf_token %}
+                
+                        <input type="text" name="task-description" class="form-control" placeholder="Tâche">
+                        <button type="submit"
+                            hx-post="{% url 'add-task' %}"
+                            hx-target="#tasks"
+                            hx-vals='js:{collection: getCollectionFromUrl()}'
+                            hx-swap="beforeend"
+                            class="btn btn-success"
+                        >Ajouter</button>
+                    </form>
+                
+                    <div id="tasks-container">
+                        {% include 'tasks/tasks.html' with tasks=tasks collection=collection %}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
     
 
-    <form method="POST">
-        {% csrf_token %}
-
-        <input type="text" name="collection-name">
-        <button type="submit"
-            hx-post="{% url 'add-collection' %}"
-            hx-target="#collections"
-            hx-swap="beforeend"
-        >Ajouter</button>
-
-    </form>
-
-    <form method="POST">
-        {% csrf_token %}
-
-        <input type="text" name="task-description">
-        <button type="submit"
-            hx-post="{% url 'add-task' %}"
-            hx-target="#tasks"
-            hx-vals='js:{collection: getCollectionFromUrl()}'
-            hx-swap="beforeend"
-        >Ajouter</button>
-    </form>
-
-    <div>
-        {% include 'tasks/tasks.html' with tasks=tasks collection=collection %}
-    </div>
+    
         
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     <script>
         document.body.addEventListener("htmx:responseError", function(evt) {
             alert(evt.detail.xhr.responseText);
