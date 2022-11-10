@@ -1,7 +1,17 @@
-#ToDoList
+# ToDoList App
 
-Add a collection
-Delete a collection
-Add a task
-Delete a task
-Display tasks of collection
+## FEATURES
+
+- Add a collection
+- Add a task (linked to a collection)
+- Display tasks of collection
+- Delete a collection
+- Delete a task
+
+## STACK
+
+- [Python](https://www.python.org/)
+- [Django](https://www.djangoproject.com/)
+- [HTMX](https://htmx.org/)
+- [Bootstrap CSS](https://getbootstrap.com/)
+
